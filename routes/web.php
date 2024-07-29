@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Job;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('home');
@@ -25,8 +26,11 @@ Route::get('/jobs/{id}', function ($id) {
     return view('jobs.show', ['job' => $job]);
 });
 
-Route::post('/jobs', function () {
-    // validation...
+Route::post('/jobs', function (Request $request) {
+    $request->validate([
+        'title' => ['required', 'min:3'],
+        'salary' => ['required']
+    ]);
 
     Job::create([
         'title' => request('title'),
